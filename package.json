@@ -1,0 +1,20 @@
+{
+  "name": "snacks-api",
+  "version": "1.0.0",
+  "description": "an api for snacks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git remote add origin https://github.com/DesG01211517/snacks-api.git"
+  },
+  "author": "Desmon Garrison",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
