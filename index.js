@@ -9,32 +9,6 @@ const app = express();
 // define port
 const PORT = 4000;
 
-//Middleware functions
-// app.use((request, response, next) => {
-//   console.log(`${request.method} request for ${request.url}`);
-//   next();
-// });
-
-//Using CORS
-app.use(cors());
-
-//Using JSON middleware to parse bodies
-
-app.use(express.json());
-
-//error handling
-app.use((error, request, response, next) => {
-  console.error(error.stack);
-  response.status(500).json("something broke!");
-});
-
-//404 Resource not found
-app.use((request, response, next) => {
-  response.status(404).json({ error: "Resource not found" });
-});
-
-//snack data
-
 const SNACKS = [
   {
     id: 1,
@@ -118,14 +92,48 @@ const SNACKS = [
   },
 ];
 
+//Using CORS
+app.use(cors());
+
+//Using JSON middleware to parse bodies
+
+app.use(express.json());
+
+//error handling
+app.use((error, request, response, next) => {
+  console.error(error.stack);
+  response.status(500).json("something broke!");
+});
+
+//404 Resource not found
+app.use((request, response, next) => {
+  response
+    .status(404)
+    .json({ error: "Resource not found, where are you looking" });
+});
+
+//snack data
+
 //defining routes
-//GET
+//GET (HOME)
 app.get("/", (request, response, next) => {
-  response.json("get route hello");
+  response.json(snacks);
+});
+//get all snacks
+app.get("/SNACKS", (request, response, next) => {
+  try {
+    response.json(SNACKS);
+  } catch (error) {
+    next(error);
+  }
 });
 //POST
 app.post("/snacks", (request, response) => {
-  response.json("snacks route POST request");
+  try {
+    response.json(SNACKS);
+  } catch (error) {
+    next(error);
+  }
 });
 //PUT
 app.put("/snacks", (request, response) => {
