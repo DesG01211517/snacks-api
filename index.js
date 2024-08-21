@@ -99,25 +99,12 @@ app.use(cors());
 
 app.use(express.json());
 
-//error handling
-app.use((error, request, response, next) => {
-  console.error(error.stack);
-  response.status(500).json("something broke!");
-});
-
-//404 Resource not found
-app.use((request, response, next) => {
-  response
-    .status(404)
-    .json({ error: "Resource not found, where are you looking" });
-});
-
 //snack data
 
 //defining routes
 //GET (HOME)
 app.get("/", (request, response, next) => {
-  response.json(snacks);
+  response.json(SNACKS);
 });
 //get all snacks
 app.get("/SNACKS", (request, response, next) => {
@@ -144,6 +131,18 @@ app.delete("/snacks", (request, response) => {
   response.json("snacks route DELETE request");
 });
 
+//error handling
+app.use((error, request, response, next) => {
+  console.error(error.stack);
+  response.status(500).json("something broke!");
+});
+
+//404 Resource not found
+app.use((request, response, next) => {
+  response
+    .status(404)
+    .json({ error: "Resource not found, where are you looking" });
+});
 //server listening on port
 app.listen(PORT, () => {
   console.log(`the server is running on http://localhost:${PORT}`);
