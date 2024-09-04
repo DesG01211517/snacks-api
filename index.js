@@ -6,7 +6,7 @@ const express = require("express");
 
 //cors
 const cors = require("cors");
-const { default: supabase } = require("./supabase");
+const supabase = require("./supabase");
 
 const app = express();
 
