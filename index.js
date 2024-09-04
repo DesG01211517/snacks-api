@@ -1,14 +1,19 @@
 //Import Dotenv
 require("dotenv").config();
 
-//import express
+//Import express
 const express = require("express");
 
 //cors
 const cors = require("cors");
 
-//const supabase = require("./supabase");
+//Import Axios
+const axios = require("axios");
 
+//Import Supabase instance
+const supabase = require("./supabaseInstance");
+
+//Express application
 const app = express();
 
 // define port
