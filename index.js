@@ -112,12 +112,12 @@ app.use(express.json());
 //snack data
 
 //defining routes
-//GET (HOME)
+// GET (HOME)
 // app.get("/", (request, response, next) => {
 //   response.json(SNACKS);
 // });
 //get all snacks
-app.get("/SNACKS", async (request, response, next) => {
+app.get("/snacks", async (request, response, next) => {
   try {
     //response.json(SNACKS);
     const res = await supabase.get("/snacks");
@@ -127,20 +127,35 @@ app.get("/SNACKS", async (request, response, next) => {
   }
 });
 //POST
-app.post("/snacks", (request, response) => {
+app.post("/snacks", async (request, response, next) => {
   try {
-    response.json(SNACKS);
+    const newSnack = request.body;
+    const res = await supabase.post("/snacks", newSnack);
+    response.status(201).json(res.data);
   } catch (error) {
     next(error);
   }
 });
 //PUT
-app.put("/snacks", (request, response) => {
-  response.json("snacks route PUT request");
+app.put("/snacks/:id", async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const updatedSnack = request.body;
+    const res = await supabase.put(`/snacks/${id}`, updatedSnack);
+    response.json(res.data);
+  } catch (error) {
+    next(error);
+  }
 });
 //DELETE
-app.delete("/snacks", (request, response) => {
-  response.json("snacks route DELETE request");
+app.delete("/snacks/:id", async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const res = await supabase.delete(`/snacks/${id}`);
+    response.json({ message: "Snack deleted successfully", data: res.data });
+  } catch (error) {
+    next(error);
+  }
 });
 
 //error handling
