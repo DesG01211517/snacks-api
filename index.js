@@ -113,13 +113,15 @@ app.use(express.json());
 
 //defining routes
 //GET (HOME)
-app.get("/", (request, response, next) => {
-  response.json(SNACKS);
-});
+// app.get("/", (request, response, next) => {
+//   response.json(SNACKS);
+// });
 //get all snacks
-app.get("/SNACKS", (request, response, next) => {
+app.get("/SNACKS", async (request, response, next) => {
   try {
-    response.json(SNACKS);
+    //response.json(SNACKS);
+    const res = await supabase.get("/snacks");
+    response.json(res.data);
   } catch (error) {
     next(error);
   }
