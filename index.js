@@ -112,20 +112,23 @@ app.use(express.json());
 //snack data
 
 //defining routes
-// GET (HOME)
-// app.get("/", (request, response, next) => {
-//   response.json(SNACKS);
-// });
-//get all snacks
-app.get("/snacks", async (request, response, next) => {
-  try {
-    //response.json(SNACKS);
-    const res = await supabase.get("/snacks");
-    response.json(res.data);
-  } catch (error) {
-    next(error);
-  }
+
+//Home Route
+
+app.get("/", (request, response, next) => {
+  response.json(SNACKS);
 });
+
+//get all snacks
+// app.get("/snacks", async (request, response, next) => {
+//   try {
+//     //response.json(SNACKS);
+//     const res = await supabase.get("/snacks");
+//     response.json(res.data);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 //POST
 app.post("/snacks", async (request, response, next) => {
   try {
