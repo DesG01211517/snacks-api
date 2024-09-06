@@ -119,16 +119,34 @@ app.get("/", (request, response, next) => {
   response.json(SNACKS);
 });
 
-//get all snacks
-// app.get("/snacks", async (request, response, next) => {
-//   try {
-//     //response.json(SNACKS);
-//     const res = await supabase.get("/snacks");
-//     response.json(res.data);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+// get all snacks
+app.get("/snacks", async (request, response, next) => {
+  try {
+    //response.json(SNACKS);
+    const res = await supabase.get("/snacks");
+    response.json(res.data);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// get snack by id
+app.get("/snack/:id", async (request, response, next) => {
+  try {
+    const res = await supabase.get(`/snack?id=eq.${request.params.id}`);
+
+    //Error Handling
+    if (!res.data) {
+      return response.status(404).json({ message: "Snack not available" });
+    }
+
+    // snack object
+    response.json(res.data[0]);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //POST
 app.post("/snacks", async (request, response, next) => {
   try {
