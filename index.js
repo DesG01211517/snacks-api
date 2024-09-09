@@ -19,6 +19,14 @@ const app = express();
 // define port
 const PORT = 4000;
 
+const corsOptions = {
+  origin: "https://example.com",
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+//snack data
 const SNACKS = [
   {
     id: 1,
@@ -106,10 +114,7 @@ const SNACKS = [
 app.use(cors());
 
 //Using JSON middleware to parse bodies
-
 app.use(express.json());
-
-//snack data
 
 //defining routes
 
