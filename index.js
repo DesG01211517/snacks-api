@@ -120,7 +120,7 @@ app.get("/", (request, response, next) => {
 });
 
 // get all snacks
-app.get("/snacks", async (request, response, next) => {
+app.get("/snacks", cors(corsOptions), async (request, response, next) => {
   try {
     //response.json(SNACKS);
     const res = await supabase.get("/snacks");
@@ -130,7 +130,7 @@ app.get("/snacks", async (request, response, next) => {
   }
 });
 
-// get snack by id
+// get single snack by id
 app.get("/snack/:id", async (request, response, next) => {
   try {
     const res = await supabase.get(`/snack?id=eq.${request.params.id}`);
@@ -140,49 +140,90 @@ app.get("/snack/:id", async (request, response, next) => {
       return response.status(404).json({ message: "Snack not available" });
     }
 
-    // snack object
+    // sending snack object
     response.json(res.data[0]);
   } catch (error) {
     next(error);
   }
 });
 
-//POST
-app.post("/snacks", async (request, response, next) => {
+//POST/add a snack
+app.post("/snacks", (request, response, next) => {
   try {
-    const newSnack = request.body;
-    const res = await supabase.post("/snacks", newSnack);
-    response.status(201).json(res.data);
+    const { name, description, price, category, inStock } = request.body;
+    //error handling doesn't send all fields necessary
+    if (!name || !description || !price || !category || !inStock) {
+      return response.status(400).json({ message: "Missing fields!" });
+    }
+    //create a new object with a new id
+    const newSnack = {
+      //id: SNACKS.length +1,
+      name,
+      description,
+      price,
+      category,
+      inStock,
+    };
+
+    //send object to our SQL db
+    const res = supabase.post("/snacks", newSnack);
+
+    response.status(201).json(newSnack);
   } catch (error) {
     next(error);
   }
 });
-//PUT
+
+//Route to Update a snack by id
 app.put("/snacks/:id", async (request, response, next) => {
   try {
-    const { id } = request.params;
-    const updatedSnack = request.body;
-    const res = await supabase.put(`/snacks/${id}`, updatedSnack);
-    response.json(res.data);
+    //destructure our request.body object so we can store the fields in variables
+    const { name, description, price, category, inStock } = request.body;
+    //error handling if request doesn't send all required fields in variables
+    if (!name || !description || !price || !category || !inStock) {
+      return response.status(400).json({ message: "Missing required fields" });
+    }
+    //create a new object with a new id
+    const updatedSnack = {
+      //id: SNACKS.length + 1,
+      name,
+      description,
+      price,
+      category,
+      inStock,
+    };
+    //send object to our SQL db
+    const res = await supabase.patch(
+      `/snacks?id=eq.${request.params.id}`,
+      updatedSnack
+    );
+
+    //send ok response
+    response.status(200).send();
   } catch (error) {
     next(error);
   }
 });
-//DELETE
+
+//DELETE by id
 app.delete("/snacks/:id", async (request, response, next) => {
   try {
-    const { id } = request.params;
-    const res = await supabase.delete(`/snacks/${id}`);
-    response.json({ message: "Snack deleted successfully", data: res.data });
+    const res = await supabase.delete(`/snacks?id=eq.${request.params.id}`);
+    response.status(204).send();
   } catch (error) {
     next(error);
   }
 });
 
 //error handling
+//Generic error handling
 app.use((error, request, response, next) => {
   console.error(error.stack);
-  response.status(500).json("something broke!");
+  response.status(500).json({
+    error: "something broke!",
+    errorStack: error.stack,
+    errorMessage: error.message,
+  });
 });
 
 //404 Resource not found
