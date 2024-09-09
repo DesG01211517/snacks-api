@@ -12,4 +12,4 @@ const instance = axios.create({
   },
 });
 
-module.exports = { instance };
+module.exports = instance;
