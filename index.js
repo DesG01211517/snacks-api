@@ -13,6 +13,9 @@ const axios = require("axios");
 //Import Supabase instance
 const supabase = require("./supabaseInstance");
 
+//Import route functions
+const getAll = require("./routes/getAll");
+
 //Express application
 const app = express();
 
@@ -41,15 +44,7 @@ app.get("/", (request, response, next) => {
 });
 
 // get all snacks
-app.get("/snacks", cors(corsOptions), async (request, response, next) => {
-  try {
-    //response.json(SNACKS);
-    const res = await supabase.get("/snacks");
-    response.json(res.data);
-  } catch (error) {
-    next(error);
-  }
-});
+app.get("/snacks", getAll);
 
 // get single snack by id
 app.get("/snacks/:id", async (request, response, next) => {
