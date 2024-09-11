@@ -52,7 +52,7 @@ app.get("/snacks", cors(corsOptions), async (request, response, next) => {
 });
 
 // get single snack by id
-app.get("/snack/:id", async (request, response, next) => {
+app.get("/snacks/:id", async (request, response, next) => {
   try {
     const res = await supabase.get(`/snacks?id=eq.${request.params.id}`);
 
