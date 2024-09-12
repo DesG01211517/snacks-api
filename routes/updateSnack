@@ -1,0 +1,2 @@
+//Import Supabase
+const supabase = require("../supabaseInstance");

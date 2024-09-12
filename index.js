@@ -15,7 +15,8 @@ const supabase = require("./supabaseInstance");
 
 //Import route functions
 const getAll = require("./routes/getAll");
-
+const getById = require("./routes/getById");
+const deleteSnack = require("./routes/deleteSnack");
 //Express application
 const app = express();
 
@@ -47,21 +48,7 @@ app.get("/", (request, response, next) => {
 app.get("/snacks", getAll);
 
 // get single snack by id
-app.get("/snacks/:id", async (request, response, next) => {
-  try {
-    const res = await supabase.get(`/snacks?id=eq.${request.params.id}`);
-
-    //Error Handling
-    if (!res.data) {
-      return response.status(404).json({ message: "Snack not available" });
-    }
-
-    // sending snack object
-    response.json(res.data[0]);
-  } catch (error) {
-    next(error);
-  }
-});
+app.get("/snacks/:id", getById);
 
 //POST/add a snack
 app.post("/snacks", (request, response, next) => {
@@ -122,14 +109,7 @@ app.put("/snacks/:id", async (request, response, next) => {
 });
 
 //DELETE by id
-app.delete("/snacks/:id", async (request, response, next) => {
-  try {
-    const res = await supabase.delete(`/snacks?id=eq.${request.params.id}`);
-    response.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-});
+app.delete("/snacks/:id", deleteSnack);
 
 //error handling
 //Generic error handling
