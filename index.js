@@ -17,6 +17,9 @@ const supabase = require("./supabaseInstance");
 const getAll = require("./routes/getAll");
 const getById = require("./routes/getById");
 const deleteSnack = require("./routes/deleteSnack");
+const updateSnack = require("./routes/updateSnack");
+const addSnack = require("./routes/addSnack");
+
 //Express application
 const app = express();
 
@@ -51,62 +54,10 @@ app.get("/snacks", getAll);
 app.get("/snacks/:id", getById);
 
 //POST/add a snack
-app.post("/snacks", (request, response, next) => {
-  try {
-    const { name, description, price, category, inStock } = request.body;
-    //error handling doesn't send all fields necessary
-    if (!name || !description || !price || !category || !inStock) {
-      return response.status(400).json({ message: "Missing fields!" });
-    }
-    //create a new object with a new id
-    const newSnack = {
-      //id: SNACKS.length +1,
-      name,
-      description,
-      price,
-      category,
-      inStock,
-    };
-
-    //send object to our SQL db
-    const res = supabase.post("/snacks", newSnack);
-
-    response.status(201).json(newSnack);
-  } catch (error) {
-    next(error);
-  }
-});
+app.post("/snacks", addSnack);
 
 //Route to Update a snack by id
-app.put("/snacks/:id", async (request, response, next) => {
-  try {
-    //destructure our request.body object so we can store the fields in variables
-    const { name, description, price, category, inStock } = request.body;
-    //error handling if request doesn't send all required fields in variables
-    if (!name || !description || !price || !category || !inStock) {
-      return response.status(400).json({ message: "Missing required fields" });
-    }
-    //create a new object with a new id
-    const updatedSnack = {
-      //id: SNACKS.length + 1,
-      name,
-      description,
-      price,
-      category,
-      inStock,
-    };
-    //send object to our SQL db
-    const res = await supabase.patch(
-      `/snacks?id=eq.${request.params.id}`,
-      updatedSnack
-    );
-
-    //send ok response
-    response.status(200).send();
-  } catch (error) {
-    next(error);
-  }
-});
+app.put("/snacks/:id", updateSnack);
 
 //DELETE by id
 app.delete("/snacks/:id", deleteSnack);
