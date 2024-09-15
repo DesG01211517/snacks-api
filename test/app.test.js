@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../index");
+const app = require("../index.js");
 
 describe("GET /snacks", () => {
   it("should return a list of snacks", async () => {
@@ -11,7 +11,7 @@ describe("GET /snacks", () => {
 
 describe("GET /snacks/:id", () => {
   it("should return a single snack by id", async () => {
-    const response = await request(app).get("/snacks/1");
+    const response = await request(app).get("/snacks/7");
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty("name");
   });
@@ -59,5 +59,3 @@ describe("DELETE /snacks/:id", () => {
     expect(response.statusCode).toBe(204);
   });
 });
-
-module.exports = app;

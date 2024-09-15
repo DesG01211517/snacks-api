@@ -34,7 +34,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 //Using CORS
-app.use(cors());
+app.use(cors(corsOptions));
 
 //Using JSON middleware to parse bodies
 app.use(express.json());
