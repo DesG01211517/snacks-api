@@ -11,7 +11,7 @@ describe("GET /snacks", () => {
 
 describe("GET /snacks/:id", () => {
   it("should return a single snack by id", async () => {
-    const response = await request(app).get("/snacks/7");
+    const response = await request(app).get("/snacks/9"); //snacks(id) must be adjusted
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty("name");
   });
