@@ -31,8 +31,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.use(cors(corsOptions));
-
 //Using CORS
 app.use(cors(corsOptions));
 
@@ -43,16 +41,16 @@ app.use(express.json());
 app.use((request, response, next) => {
   const apiKey = request.headers["api-key"];
   console.log(apiKey);
-  if (apiKey !== process.env.ADMIN_API_KEY) {
-    return response
-      .status(403)
-      .json({ message: "Access Denied! API key required" });
-  }
-  next();
+
+  // if (apiKey !== process.env.ADMIN_API_KEY) {
+  //   return response
+  //     .status(403)
+  //     .json({ message: "Access Denied! API key required" });
+  // }
+  // next();
 });
 
 //defining routes
-
 //Home Route
 
 app.get("/", (request, response, next) => {
