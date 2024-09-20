@@ -39,6 +39,18 @@ app.use(cors(corsOptions));
 //Using JSON middleware to parse bodies
 app.use(express.json());
 
+//middleware for API security
+app.use((request, response, next) => {
+  const apiKey = request.headers["api-key"];
+  console.log(apiKey);
+  if (apiKey !== process.env.ADMIN_API_KEY) {
+    return response
+      .status(403)
+      .json({ message: "Access Denied! API key required" });
+  }
+  next();
+});
+
 //defining routes
 
 //Home Route
@@ -53,14 +65,14 @@ app.get("/snacks", getAll);
 // get single snack by id
 app.get("/snacks/:id", getById);
 
+//DELETE by id
+app.delete("/snacks/:id", deleteSnack);
+
 //POST/add a snack
 app.post("/snacks", addSnack);
 
 //Route to Update a snack by id
 app.put("/snacks/:id", updateSnack);
-
-//DELETE by id
-app.delete("/snacks/:id", deleteSnack);
 
 //error handling
 //Generic error handling
