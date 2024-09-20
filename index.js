@@ -91,10 +91,11 @@ app.use((request, response, next) => {
     .status(404)
     .json({ error: "Resource not found, where are you looking" });
 });
-//export app for testing
-module.exports = app;
 
 //server listening on port
 app.listen(PORT, () => {
   console.log(`the server is running on http://localhost:${PORT}`);
 });
+
+//export app for testing
+module.exports = app;
