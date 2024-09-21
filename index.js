@@ -14,11 +14,11 @@ const axios = require("axios");
 const supabase = require("./supabaseInstance");
 
 //Import route functions
-const getAll = require("./routes/getAll");
-const getById = require("./routes/getById");
-const deleteSnack = require("./routes/deleteSnack");
-const updateSnack = require("./routes/updateSnack");
-const addSnack = require("./routes/addSnack");
+const getAll = require("./routes/getAll.js");
+const getById = require("./routes/getById.js");
+const deleteSnack = require("./routes/deleteSnack.js");
+const updateSnack = require("./routes/updateSnack.js");
+const addSnack = require("./routes/addSnack.js");
 
 //Express application
 const app = express();
@@ -54,7 +54,7 @@ app.use(express.json());
 //Home Route
 
 app.get("/", (request, response, next) => {
-  response.json(SNACKS);
+  response.json({ message: "welcome to the server" });
 });
 
 // get all snacks
