@@ -6,7 +6,7 @@ const getById = async (request, response, next) => {
     const res = await supabase.get(`/snacks?id=eq.${request.params.id}`);
 
     //Error Handling
-    if (!res.data) {
+    if (!res.data.length) {
       return response.status(404).json({ message: "Snack not available" });
     }
 
