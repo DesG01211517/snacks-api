@@ -5,6 +5,7 @@ const getAll = async (request, response, next) => {
   try {
     //response.json(SNACKS);
     const res = await supabase.get("/snacks");
+    console.log(res.data);
     response.json(res.data);
   } catch (error) {
     next(error);
