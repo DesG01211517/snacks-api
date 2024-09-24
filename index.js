@@ -38,17 +38,17 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 //middleware for API security
-// app.use((request, response, next) => {
-//   const apiKey = request.headers["api-key"];
-//   console.log(apiKey);
+app.use((request, response, next) => {
+  const apiKey = request.headers["api-key"];
+  console.log(apiKey);
 
-//   if (apiKey !== process.env.ADMIN_API_KEY) {
-//     return response
-//       .status(403)
-//       .json({ message: "Access Denied! API key required" });
-//   }
-//   next();
-// });
+  if (apiKey !== "crabby-patty-formula") {
+    return response
+      .status(403)
+      .json({ message: "Access Denied! API key required" });
+  }
+  next();
+});
 
 //defining routes
 //Home Route
