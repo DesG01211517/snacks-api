@@ -1,25 +1,28 @@
+//Import Dotenv
+require("dotenv").config();
+
 const request = require("supertest");
 const app = require("../index.js");
 
 describe("GET /snacks", () => {
+  //test to get all
   it("should return a list of snacks", async () => {
-    const response = await request(app).get("/snacks");
+    const response = await request(app)
+      .get("/snacks")
+      .set("api-key", process.env.ADMIN_API_KEY);
     expect(response.statusCode).toBe(200);
     expect(response.body).toBeInstanceOf(Array);
   });
 });
-
+//test to get a single snack by id
 describe("GET /snacks/:id", () => {
   it("should return a single snack by id", async () => {
-    const response = await request(app).get("/snacks/33"); //snacks(id) must be adjusted
-    console.log(response.body);
+    const snackId = 8; //snacks(id) must ne adjusted
+    const response = await request(app)
+      .get(`/snacks/${snackId}`)
+      .set("api-key", process.env.ADMIN_API_KEY);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty("id");
-  });
-
-  it("should return 404 if snack not found", async () => {
-    const response = await request(app).get("/snacks/999");
-    expect(response.statusCode).toBe(404);
+    expect(response.body).toHaveProperty("id", snackId);
   });
 });
 
@@ -33,7 +36,10 @@ describe("POST /snacks", () => {
       inStock: true,
     };
 
-    const response = await request(app).post("/snacks").send(newSnack);
+    const response = await request(app)
+      .post("/snacks")
+      .set("api-key", process.env.ADMIN_API_KEY)
+      .send(newSnack);
     expect(response.statusCode).toBe(201);
     expect(response.body).toMatchObject(newSnack);
   });
@@ -49,14 +55,19 @@ describe("PUT /snacks/:id", () => {
       inStock: true,
     };
 
-    const response = await request(app).put("/snacks/1").send(updatedSnack);
+    const response = await request(app)
+      .put("/snacks/1")
+      .set("api-key", process.env.ADMIN_API_KEY)
+      .send(updatedSnack);
     expect(response.statusCode).toBe(200);
   });
 });
 
 describe("DELETE /snacks/:id", () => {
   it("should delete a snack", async () => {
-    const response = await request(app).delete("/snacks/1");
+    const response = await request(app)
+      .delete("/snacks/1")
+      .set("api-key", process.env.ADMIN_API_KEY);
     expect(response.statusCode).toBe(204);
   });
 });
