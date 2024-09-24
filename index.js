@@ -28,7 +28,7 @@ const app = express();
 const PORT = 4000;
 
 const corsOptions = {
-  origin: "https://example.com",
+  origin: process.env.SNACKS_CLIENT,
   optionsSuccessStatus: 200,
 };
 
