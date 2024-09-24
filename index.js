@@ -19,6 +19,7 @@ const getById = require("./routes/getById.js");
 const deleteSnack = require("./routes/deleteSnack.js");
 const updateSnack = require("./routes/updateSnack.js");
 const addSnack = require("./routes/addSnack.js");
+const docs = require("./routes/docs.js");
 
 //Express application
 const app = express();
@@ -40,7 +41,6 @@ app.use(express.json());
 //middleware for API security
 app.use((request, response, next) => {
   const apiKey = request.headers["api-key"];
-  console.log(apiKey);
 
   if (apiKey !== process.env.ADMIN_API_KEY) {
     return response
@@ -54,7 +54,7 @@ app.use((request, response, next) => {
 //Home Route
 
 app.get("/", (request, response, next) => {
-  response.json({ message: "welcome to the server" });
+  response.json(docs);
 });
 
 // get all snacks
