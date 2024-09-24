@@ -42,7 +42,7 @@ app.use((request, response, next) => {
   const apiKey = request.headers["api-key"];
   console.log(apiKey);
 
-  if (apiKey !== "crabby-patty-formula") {
+  if (apiKey !== process.env.ADMIN_API_KEY) {
     return response
       .status(403)
       .json({ message: "Access Denied! API key required" });
