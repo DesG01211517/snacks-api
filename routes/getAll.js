@@ -1,11 +1,15 @@
 //Import Supabase
 const supabase = require("../supabaseInstance");
 
+const cache = {};
+
 const getAll = async (request, response, next) => {
   try {
-    //response.json(SNACKS);
+    if (cache["snacks"]) {
+      return response.json(cache["snacks"]);
+    }
     const res = await supabase.get("/snacks");
-    console.log(res);
+    cache["snacks"] = res.data;
     response.json(res.data);
   } catch (error) {
     next(error);

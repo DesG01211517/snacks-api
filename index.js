@@ -50,6 +50,8 @@ app.use((request, response, next) => {
   next();
 });
 
+const cache = {};
+
 //defining routes
 //Home Route
 
